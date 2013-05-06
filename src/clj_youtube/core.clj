@@ -21,6 +21,10 @@
       authsub/wrap-gdata-version
       http/wrap-url))
 
+(defn upload-feed [username]
+  {:request-method :get
+   :url (urls/public-feed-url username)})
+
 (defn get-upload-feed
   "Fetch the uploads for a channel given by `token`. Or `user-name` Feed data is in :xml key of response if response status is 200 OK."
   ([developer-key token]
@@ -81,9 +85,7 @@
   ([f request]
      (lazy-pages f request 1))
   ([request]
-     (lazy-pages (-> http-core/request
-                    http/wrap-query-params
-                    parse/wrap-xml)
+     (lazy-pages public-request
                  request 1)))
 
 (defn lazy-feed
